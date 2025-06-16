@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from "react";
 import Auth from "./auth";
 import Navbar from "./navbar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const [user, setUser] = useState(true);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);
 
+  const handleViewBlog = (blogId) => {
+    localStorage.setItem("blog-id", blogId);
+    navigate("/blog");
+  };
+
   useEffect(() => {
-    const sampleBlogs = [
-      {
-        id: 1,
-        title: "Understanding React Hooks",
-        description:
-          "Hooks let you use state and other React features without writing a class...",
-        author: "Yuvraj Singh",
-      },
-      {
-        id: 2,
-        title: "10 Tips for Writing Clean JavaScript",
-        description:
-          "Writing clean code is essential for readability and maintenance...",
-        author: "random user1",
-      },
-    ];
-    setBlogs(sampleBlogs);
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem("blog-app-token");
+        if (token) {
+          const res = await axios.get(
+            "http://localhost:8000/api/user/profile",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setUser(res.data.user);
+
+          // console.log(res.data.user);
+        }
+      } catch (err) {
+        localStorage.removeItem("blog-app-token");
+      }
+    };
+    checkAuth();
+
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8000/api/blog/getAllBlogs"
+        );
+        console.log(res.data.blogs);
+        setBlogs(res.data.blogs);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+    fetchBlogs();
   }, []);
 
   return (
@@ -40,23 +63,35 @@ const Home = () => {
               <div className="space-y-6">
                 {blogs.map((blog) => (
                   <div
-                    key={blog.id}
-                    className="bg-white border rounded-lg p-6 shadow hover:shadow-lg transition"
+                    key={blog._id}
+                    className="bg-white border rounded-lg p-6 shadow hover:shadow-lg transition flex gap-6 items-center h-[150px] cursor-pointer"
+                    onClick={() => handleViewBlog(blog._id)}
                   >
-                    <h2 className="text-2xl font-semibold text-gray-800">
-                      {blog.title}
-                    </h2>
-                    <p className="text-gray-600 mt-2">{blog.description}</p>
-                    <div className="flex justify-between items-center mt-4">
-                      <span className="text-sm text-gray-500">
-                        By {blog.author}
-                      </span>
-                      <a
-                        href={`/blog/${blog.id}`}
-                        className="text-blue-600 hover:underline text-sm font-medium"
-                      >
-                        Read More →
-                      </a>
+                    <div className="w-[80%] ">
+                      <h2 className="text-4xl font-semibold text-gray-800">
+                        {blog.title}
+                      </h2>
+                      <div className="flex justify-between items-center mt-4">
+                        <div className="text-sm text-gray-500">
+                          <span>By {blog.author.fullName}</span>
+                          <p>
+                            {new Date(blog.createdAt).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="w-[20%]">
+                      <img
+                        src={blog.blogImage}
+                        className="object-contain rounded-md"
+                      />
                     </div>
                   </div>
                 ))}
@@ -68,7 +103,7 @@ const Home = () => {
           </div>
         </div>
       ) : (
-        <Auth />
+        <Auth setUser={setUser} />
       )}
     </>
   );
