@@ -14,6 +14,7 @@ const ViewBlog = () => {
   const contentRef = useRef(null);
   const [blogImage, setBlogImage] = useState(null);
   const [blogImageFile, setBlogImageFile] = useState(null);
+  const [likes, setLikes] = useState(null);
 
   const handleEdit = async () => {
     if (!blog.title || !blog.content || !blog.category) {
@@ -81,6 +82,18 @@ const ViewBlog = () => {
       }
     };
     fetchBlog();
+
+    const fetchLikes = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/like/getAllLikes/${blogId}`
+        );
+        setLikes(res.data.count);
+      } catch (error) {
+        console.error("Error fetching likes:", error);
+      }
+    };
+    fetchLikes();
   }, [isEdit]);
 
   useEffect(() => {
@@ -164,8 +177,11 @@ const ViewBlog = () => {
             </p>
             <hr />
             <div className="flex justify-between items-center text-2xl p-3">
-              <div className="flex gap-4">
-                <FaHeart className="cursor-pointer text-red-500 hover:text-red-700" />
+              <div className="flex gap-6 items-center">
+                <div className="flex gap-2 items-center">
+                  <FaHeart className="cursor-pointer text-red-500 hover:text-red-700" />
+                  <p className="text-lg">{likes}</p>
+                </div>
                 <FaRegComment className="cursor-pointer text-gray-700 hover:text-black" />
               </div>
             </div>

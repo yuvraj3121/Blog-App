@@ -4,6 +4,7 @@ import WriteBlog from "./userPages/writeBlog";
 import Blog from "./components/blog";
 import UserBlogs from "./userPages/userBlogs";
 import ViewBlog from "./userPages/viewBlog";
+import Library from "./userPages/library";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/write" element={<WriteBlog />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/my-blogs" element={<UserBlogs />} />
+      <Route path="/library" element={<Library />} />
       <Route path="/my-blog" element={<ViewBlog />} />
     </Routes>
   );

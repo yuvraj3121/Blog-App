@@ -78,10 +78,10 @@ const Navbar = () => {
               Profile
             </a>
             <a
-              href="/my-blogs"
+              href="/library"
               className="block px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-md"
             >
-              My Blogs
+              Library
             </a>
             <a
               href="/"

@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "./navbar";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -49,6 +48,41 @@ const Blog = () => {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/save/createSave/${blogId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
+          },
+        }
+      );
+      console.log(res.data);
+      setSaved(true);
+    } catch (error) {
+      console.log("Error saving blog", error);
+    }
+  };
+
+  const handleRemoveSaved = async () => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/api/save/removeSaved/${blogId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
+          },
+        }
+      );
+      console.log(res.data);
+      setSaved(false);
+    } catch (error) {
+      console.log("Error removing blog from saved", error);
+    }
+  };
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
@@ -67,7 +101,9 @@ const Blog = () => {
       }
     };
     checkAuth();
+  }, []);
 
+  useEffect(() => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
@@ -95,7 +131,24 @@ const Blog = () => {
       }
     };
     fetchLikes();
-  }, [blogId, liked]);
+
+    const checkSaved = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/save/isSaved/${blogId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
+            },
+          }
+        );
+        setSaved(res.data.saved);
+      } catch (error) {
+        console.error("Error checking:", error);
+      }
+    };
+    checkSaved();
+  }, [blogId, liked, saved]);
 
   return (
     <>
@@ -114,7 +167,7 @@ const Blog = () => {
             </p>
             <hr />
             <div className="flex justify-between items-center text-2xl p-3">
-              <div className="flex gap-6">
+              <div className="flex gap-6 items-center">
                 {liked ? (
                   <div className="flex items-center gap-2">
                     <FaHeart
@@ -137,12 +190,12 @@ const Blog = () => {
               {saved ? (
                 <MdBookmarkAdded
                   className="cursor-pointer text-gray-700 hover:text-black"
-                  onClick={() => setSaved(false)}
+                  onClick={handleRemoveSaved}
                 />
               ) : (
                 <MdOutlineBookmarkAdd
                   className="cursor-pointer text-gray-700 hover:text-black"
-                  onClick={() => setSaved(true)}
+                  onClick={handleSave}
                 />
               )}
             </div>
