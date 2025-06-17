@@ -7,12 +7,67 @@ import { FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa6";
 import { MdOutlineBookmarkAdd, MdBookmarkAdded } from "react-icons/md";
 
 const Blog = () => {
+  const [userId, setUserId] = useState(null);
   const [blog, setBlog] = useState(null);
   const blogId = localStorage.getItem("blog-id");
   const [saved, setSaved] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState(null);
+
+  const handleLike = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/like/createLike/${blogId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
+          },
+        }
+      );
+      console.log(res.data);
+      setLiked(true);
+    } catch (error) {
+      console.log("Error liking blog", error);
+    }
+  };
+
+  const handleDislike = async () => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:8000/api/like/removeLike/${blogId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
+          },
+        }
+      );
+      console.log(res.data);
+      setLiked(false);
+    } catch (error) {
+      console.log("Error disliking blog", error);
+    }
+  };
 
   useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem("blog-app-token");
+        if (token) {
+          const res = await axios.get(
+            "http://localhost:8000/api/user/profile",
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setUserId(res.data.user._id);
+        }
+      } catch (err) {
+        localStorage.removeItem("blog-app-token");
+      }
+    };
+    checkAuth();
+
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
@@ -24,7 +79,23 @@ const Blog = () => {
       }
     };
     fetchBlog();
-  }, [blogId]);
+
+    const fetchLikes = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/like/getAllLikes/${blogId}`
+        );
+        setLikes(res.data.count);
+        const likedByUser = res.data.likes.some(
+          (like) => like.userId._id === userId
+        );
+        setLiked(likedByUser);
+      } catch (error) {
+        console.error("Error fetching likes:", error);
+      }
+    };
+    fetchLikes();
+  }, [blogId, liked]);
 
   return (
     <>
@@ -43,17 +114,23 @@ const Blog = () => {
             </p>
             <hr />
             <div className="flex justify-between items-center text-2xl p-3">
-              <div className="flex gap-4">
+              <div className="flex gap-6">
                 {liked ? (
-                  <FaHeart
-                    className="cursor-pointer text-red-500 hover:text-red-700"
-                    onClick={() => setLiked(false)}
-                  />
+                  <div className="flex items-center gap-2">
+                    <FaHeart
+                      className="cursor-pointer text-red-500 hover:text-red-700"
+                      onClick={handleDislike}
+                    />
+                    <p className="text-lg">{likes}</p>
+                  </div>
                 ) : (
-                  <FaRegHeart
-                    className="cursor-pointer text-gray-700 hover:text-black"
-                    onClick={() => setLiked(true)}
-                  />
+                  <div className="flex items-center gap-2">
+                    <FaRegHeart
+                      className="cursor-pointer text-gray-700 hover:text-black"
+                      onClick={handleLike}
+                    />
+                    <p className="text-lg">{likes}</p>
+                  </div>
                 )}
                 <FaRegComment className="cursor-pointer text-gray-700 hover:text-black" />
               </div>

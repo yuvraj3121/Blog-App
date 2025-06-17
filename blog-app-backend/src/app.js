@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRoutes from "./routes/user.route.js";
 import blogRoutes from "./routes/blog.route.js";
+import likeRoutes from "./routes/like.route.js";
 
 const app = express();
 app.use(
@@ -14,4 +15,5 @@ app.use(express.json());
 
 app.use("/api/user", userRoutes);
 app.use("/api/blog", blogRoutes);
+app.use("/api/like", likeRoutes);
 export { app };
