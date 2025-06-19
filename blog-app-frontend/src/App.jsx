@@ -5,6 +5,7 @@ import Blog from "./components/blog";
 import UserBlogs from "./userPages/userBlogs";
 import ViewBlog from "./userPages/viewBlog";
 import Library from "./userPages/library";
+import AdminPanel from "./adminPages/adminPanel";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/my-blogs" element={<UserBlogs />} />
       <Route path="/library" element={<Library />} />
       <Route path="/my-blog" element={<ViewBlog />} />
+      <Route path="/adminPanel" element={<AdminPanel />} />
     </Routes>
   );
 }

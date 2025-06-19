@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Auth = ({ setUser }) => {
+  const navigate = useNavigate();
   const [component, setComponent] = useState("login");
   const [formData, setFormData] = useState({
     email: "",
@@ -31,8 +32,9 @@ const Auth = ({ setUser }) => {
           password: formData.password,
         });
         console.log(res.data);
-        setUser(res.data.user);
         localStorage.setItem("blog-app-token", res.data.token);
+        if (res.data.user.role == "admin") navigate("/adminPanel");
+        else setUser(res.data.user);
       } catch (error) {
         console.error("Login error:", error);
         alert("Login failed. Please try again.");
