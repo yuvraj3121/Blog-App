@@ -6,6 +6,7 @@ import {
   getUserBlogs,
   getBlogById,
   deleteBlog,
+  updateBlogStatus,
 } from "../controllers/blog.controller.js";
 import { protect } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -27,5 +28,6 @@ router.get("/getAllBlogs", getAllBlogs);
 router.get("/getUserBlogs", protect, getUserBlogs);
 router.get("/getBlogById/:id", getBlogById);
 router.delete("/deleteBlog/:id", protect, deleteBlog);
+router.patch("/updateStatus/:id", updateBlogStatus);
 
 export default router;

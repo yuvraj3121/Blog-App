@@ -40,8 +40,10 @@ const Home = () => {
         const res = await axios.get(
           "http://localhost:8000/api/blog/getAllBlogs"
         );
-        console.log(res.data.blogs);
-        setBlogs(res.data.blogs);
+        const acceptedBlogs = res.data.blogs.filter(
+          (blog) => blog.status === "accepted"
+        );
+        setBlogs(acceptedBlogs);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }

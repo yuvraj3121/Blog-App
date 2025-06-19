@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import {
   FiHome,
   FiUsers,
@@ -11,7 +11,7 @@ import { SiHatenabookmark } from "react-icons/si";
 import { RiAdvertisementLine } from "react-icons/ri";
 import AdminDashboard from "./adminDashboard";
 import { useNavigate } from "react-router-dom";
-import AdminAds from "./adminAds";
+import AdminAds from "./adminAds.jsx";
 import AdminBlogs from "./adminBlogs";
 import AdminCustomers from "./adminCustomers";
 

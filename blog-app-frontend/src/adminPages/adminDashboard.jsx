@@ -8,7 +8,7 @@ import { RiAdvertisementLine } from "react-icons/ri";
 const AdminDashboard = () => {
   const [usersData, setUsersData] = useState(null);
   const [blogs, setBlogs] = useState([]);
-  const [allOrders, setAllOrders] = useState([]);
+  const [allAds, setAllAds] = useState([]);
   const [allVendors, setAllVendors] = useState([]);
   const [allDeliveryPartners, setAllDeliveryPartners] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -26,6 +26,17 @@ const AdminDashboard = () => {
       }
     };
     fetchBlogs();
+
+    const fetchAds = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        console.log(res.data.ads);
+        setAllAds(res.data);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+    fetchAds();
   }, []);
 
   const stats = [
@@ -37,7 +48,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Ads",
-      value: 9,
+      value: allAds?.count,
       icon: <RiAdvertisementLine size={24} />,
       change: "+3%",
     },
@@ -71,6 +82,59 @@ const AdminDashboard = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="bg-white p-6 rounded-xl shadow">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-lg font-semibold">Latest Blogs</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50 text-left">
+              <tr>
+                <th className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Author
+                </th>
+                <th className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Category
+                </th>
+                <th className="px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {blogs?.blogs?.slice(0, 5).map((blog) => (
+                <tr key={blog._id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
+                    {blog.title}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {blog.author.fullName}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {blog.category}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <p
+                      className={`${
+                        blog.status == "accepted"
+                          ? "text-green-500 bg-green-200"
+                          : blog.status == "rejected"
+                          ? "text-red-500 bg-red-200"
+                          : "text-yellow-500 bg-yellow-200"
+                      } p-1 w-fit rounded-md`}
+                    >
+                      {blog?.status}
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

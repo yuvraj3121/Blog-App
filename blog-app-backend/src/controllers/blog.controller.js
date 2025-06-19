@@ -148,6 +148,30 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+const updateBlogStatus = async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    const { status } = req.body;
+
+    const validStatuses = ["accepted", "rejected", "pending"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: "Invalid status value" });
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      blogId,
+      { status },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Blog status updated", blog: updatedBlog });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating blog status", error: error.message });
+  }
+};
+
 export {
   createBlog,
   editBlog,
@@ -155,4 +179,5 @@ export {
   getUserBlogs,
   getBlogById,
   deleteBlog,
+  updateBlogStatus,
 };
