@@ -7,7 +7,7 @@ const AdminAdDetails = ({ selectedAd, setComponentSelect }) => {
   const [position, setPosition] = useState(selectedAd.position);
   const [adImageFile, setAdImageFile] = useState(null);
   const [adImage, setAdImage] = useState(selectedAd.adImage);
-  const totalRevenue = selectedAd.totalClicks * 100;
+  const totalRevenue = selectedAd.totalClicks * 500;
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -58,7 +58,7 @@ const AdminAdDetails = ({ selectedAd, setComponentSelect }) => {
             </button>
           </div>
           <div className="flex flex-row">
-            <div className="w-[70%]">
+            <div className="w-[70%] flex justify-center">
               <img className="object-contain" src={adImage} alt="" />
             </div>
             <div className="ml-2 bg-gray-200 w-[30%] p-5  text-left flex flex-col gap-2">

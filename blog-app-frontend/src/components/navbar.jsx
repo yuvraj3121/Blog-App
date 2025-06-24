@@ -47,23 +47,23 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-white shadow-md h-[80px]">
       <div
-        className="text-xl font-bold text-blue-600 cursor-pointer"
+        className="text-3xl font-bold text-black cursor-pointer font-serif"
         onClick={() => navigate("/")}
       >
-        Blog App
+        MindDrop
       </div>
 
       <div className="relative" ref={dropdownRef}>
         <div className="flex gap-4 ">
           <button
-            className="flex items-center justify-center gap-2 hover:text-blue-600 text-gray-700 font-medium"
+            className="flex items-center justify-center gap-2 hover:text-blue-600 text-gray-700 font-medium p-2"
             onClick={() => navigate("/write")}
           >
             <PiNotePencil /> Write
           </button>
           <button
             onClick={toggleDropdown}
-            className="text-gray-700 font-medium hover:text-blue-600 focus:outline-none flex items-center"
+            className="text-gray-700 font-medium hover:text-blue-600 focus:outline-none flex items-center p-2"
           >
             {user?.userName}
           </button>

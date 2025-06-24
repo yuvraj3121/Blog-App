@@ -34,6 +34,12 @@ const SavedBlogs = () => {
   return (
     <>
       <div className="space-y-6 mt-4">
+        {blogs?.length == 0 && (
+          <div className="bg-gray-50 flex flex-col justify-center items-center h-[400px] rounded-md">
+            <p className="text-lg">No blogs here for now.</p>
+            <p className="text-lg">Explore and come back later.</p>
+          </div>
+        )}
         {blogs?.map((blog) => (
           <div
             key={blog._id}

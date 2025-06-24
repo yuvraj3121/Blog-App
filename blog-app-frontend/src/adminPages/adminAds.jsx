@@ -69,7 +69,7 @@ const AdminAds = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {allAds.ads?.map((ad) => (
+                  {allAds?.ads?.map((ad) => (
                     <tr key={ad._id}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
                         {ad._id}

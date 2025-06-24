@@ -33,6 +33,16 @@ const UserBlogs = () => {
   return (
     <>
       <div className="space-y-6 mt-4">
+        {blogs?.length == 0 && (
+          <div className="bg-gray-50 flex flex-col justify-center items-center h-[400px] rounded-md">
+            <p className="text-lg w-[300px">
+              You haven’t written any blogs yet.
+            </p>
+            <p className="text-lg">
+              Ready to share your thoughts with the world?
+            </p>
+          </div>
+        )}
         {blogs?.map((blog) => (
           <div
             key={blog._id}

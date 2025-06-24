@@ -5,6 +5,8 @@ import blogRoutes from "./routes/blog.route.js";
 import likeRoutes from "./routes/like.route.js";
 import saveRoutes from "./routes/save.route.js";
 import adRoutes from "./routes/ads.route.js";
+import commentRoutes from "./routes/comment.route.js";
+import replyRoutes from "./routes/reply.route.js";
 
 const app = express();
 app.use(
@@ -20,4 +22,7 @@ app.use("/api/blog", blogRoutes);
 app.use("/api/like", likeRoutes);
 app.use("/api/save", saveRoutes);
 app.use("/api/ad", adRoutes);
+app.use("/api/comment", commentRoutes);
+app.use("/api/reply", replyRoutes);
+
 export { app };

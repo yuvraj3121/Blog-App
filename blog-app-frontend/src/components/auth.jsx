@@ -69,9 +69,9 @@ const Auth = ({ setUser }) => {
 
   return (
     <div className="flex flex-col h-[100vh] w-[206vh]">
-      <h1 className="p-4 mb-4">Blog App</h1>
+      <h1 className="p-4 font-serif font-semibold">MindDrop</h1>
       <hr />
-      <div className="bg-[url('/bg1.jpg')] h-full w-full flex justify-center items-center">
+      <div className="bg-[url('/bg-3.jpg')] h-full w-full flex justify-center items-center">
         <div className="text-black bg-gray-200 w-[500px] h-[450px] mt-4 rounded-2xl p-2">
           <div className="text-2xl font-bold px-2 pt-2 flex gap-3">
             <span
@@ -144,7 +144,7 @@ const Auth = ({ setUser }) => {
               />
               <input
                 name="phoneNumber"
-                type="number"
+                type="text"
                 placeholder="Enter your phone number"
                 className="mb-4 p-2 border border-gray-400 rounded"
                 onChange={handleChange}

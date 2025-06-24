@@ -9,9 +9,7 @@ const AdminDashboard = () => {
   const [usersData, setUsersData] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [allAds, setAllAds] = useState([]);
-  const [allVendors, setAllVendors] = useState([]);
-  const [allDeliveryPartners, setAllDeliveryPartners] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -19,7 +17,7 @@ const AdminDashboard = () => {
         const res = await axios.get(
           "http://localhost:8000/api/blog/getAllBlogs"
         );
-        console.log(res.data.blogs);
+        // console.log(res.data.blogs);
         setBlogs(res.data);
       } catch (error) {
         console.error("Error fetching blogs:", error);
@@ -30,8 +28,14 @@ const AdminDashboard = () => {
     const fetchAds = async () => {
       try {
         const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
-        console.log(res.data.ads);
+        // console.log(res.data.ads);
         setAllAds(res.data);
+        const totalClicks = res.data.ads.reduce(
+          (sum, ad) => sum + ad.totalClicks,
+          0
+        );
+        setTotalRevenue(totalClicks * 500);
+        console.log(totalClicks * 500);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -42,7 +46,7 @@ const AdminDashboard = () => {
   const stats = [
     {
       title: "Total Revenue",
-      value: `₹1000`,
+      value: `₹${totalRevenue}`,
       icon: <FaRupeeSign size={24} />,
       change: "+12%",
     },
@@ -60,7 +64,7 @@ const AdminDashboard = () => {
     },
     {
       title: "Customers",
-      value: 10,
+      value: 2,
       icon: <FiUsers size={24} />,
       change: "+8%",
     },
@@ -69,7 +73,7 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
+        {stats?.map((stat, index) => (
           <div key={index} className="bg-white p-6 rounded-xl shadow">
             <div className="flex justify-evenly items-start">
               <div className="p-3 bg-blue-100 rounded-lg text-blue-600">

@@ -4,6 +4,7 @@ import { FaHeart, FaPlus, FaRegComment, FaRegHeart } from "react-icons/fa6";
 import Navbar from "../components/navbar";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import CommentSection from "../components/commentSection";
 
 const ViewBlog = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const ViewBlog = () => {
   const [blogImage, setBlogImage] = useState(null);
   const [blogImageFile, setBlogImageFile] = useState(null);
   const [likes, setLikes] = useState(null);
+  const [totalcomments, setTotalComments] = useState([]);
+  const commentRef = useRef(null);
 
   const handleEdit = async () => {
     if (!blog.title || !blog.content || !blog.category) {
@@ -122,6 +125,8 @@ const ViewBlog = () => {
                 <option value="tech">Tech</option>
                 <option value="lifestyle">Lifestyle</option>
                 <option value="business">Business</option>
+                <option value="culture">Culture</option>
+                <option value="tourism">Tourism</option>
               </select>
               <button
                 className="bg-green-300 hover:bg-green-400 h-50px"
@@ -180,9 +185,19 @@ const ViewBlog = () => {
               <div className="flex gap-6 items-center">
                 <div className="flex gap-2 items-center">
                   <FaHeart className="cursor-pointer text-red-500 hover:text-red-700" />
-                  <p className="text-lg">{likes}</p>
+                  <p className="text-lg">{likes || 0}</p>
                 </div>
-                <FaRegComment className="cursor-pointer text-gray-700 hover:text-black" />
+                <div className="flex gap-2 items-center">
+                  <FaRegComment
+                    className="cursor-pointer text-gray-700 hover:text-black"
+                    onClick={() => {
+                      commentRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }}
+                  />
+                  <p className="text-lg">{totalcomments || 0}</p>
+                </div>
               </div>
             </div>
             <hr />
@@ -236,6 +251,10 @@ const ViewBlog = () => {
               className="bg-gray-50 w-full mt-4 p-4 text-lg rounded-b-lg outline-none text-justify"
             />
           </div>
+          <CommentSection
+            setTotalComments={setTotalComments}
+            commentRef={commentRef}
+          />
         </div>
       </div>
     </>

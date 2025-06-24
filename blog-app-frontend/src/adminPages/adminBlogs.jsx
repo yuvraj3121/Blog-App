@@ -20,7 +20,7 @@ const AdminBlogs = () => {
       }
     };
     fetchBlogs();
-  }, []);
+  }, [componentSelect]);
 
   return (
     <>

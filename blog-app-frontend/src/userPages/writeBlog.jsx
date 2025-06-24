@@ -68,6 +68,8 @@ const WriteBlog = () => {
             <option value="tech">Tech</option>
             <option value="lifestyle">Lifestyle</option>
             <option value="business">Business</option>
+            <option value="culture">Culture</option>
+            <option value="tourism">Tourism</option>
           </select>
           <button
             className="bg-green-400 hover:bg-green-500 hover:border-green-700 h-[30px] w-[70px] text-xl flex justify-center items-center "

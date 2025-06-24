@@ -8,10 +8,27 @@ const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [blogs, setBlogs] = useState([]);
+  const [allAds, setAllAds] = useState([]);
+  const [topAd, setTopAd] = useState(null);
+  const [sideAd, setSideAd] = useState(null);
+  const [selectAd, setSelectAd] = useState(null);
 
   const handleViewBlog = (blogId) => {
     localStorage.setItem("blog-id", blogId);
     navigate("/blog");
+  };
+
+  const handleClick = async (ad) => {
+    if (!ad?._id) return;
+    setSelectAd(ad);
+    try {
+      const res = await axios.patch(
+        `http://localhost:8000/api/ad/trackClick/${ad._id}`
+      );
+      console.log(res.data);
+    } catch (error) {
+      console.error("Error tracking ad click:", error);
+    }
   };
 
   useEffect(() => {
@@ -26,8 +43,6 @@ const Home = () => {
             }
           );
           setUser(res.data.user);
-
-          // console.log(res.data.user);
         }
       } catch (err) {
         localStorage.removeItem("blog-app-token");
@@ -49,61 +64,113 @@ const Home = () => {
       }
     };
     fetchBlogs();
+
+    const fetchAds = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        console.log(res.data.ads);
+        setAllAds(res.data);
+        const top = res.data.ads.filter(
+          (ad) => ad.status == "active" && ad.position == "top"
+        );
+        const side = res.data.ads.filter(
+          (ad) => ad.status == "active" && ad.position == "side"
+        );
+        const n1 = Math.floor(Math.random() * (top.length - 1)) + 0;
+        setTopAd(top[n1]);
+        const n2 = Math.floor(Math.random() * (side.length - 1)) + 0;
+        setSideAd(side[n2]);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+    };
+    fetchAds();
   }, []);
 
   return (
     <>
       {user ? (
-        <div className="">
-          <Navbar />
-          <div className="flex">
-            <div className="w-[70%] mx-auto px-4 py-8">
-              <div className="bg-gray-400 h-[100px] w-full">Ad 1</div>
-              <h1 className="text-3xl font-bold mb-6 text-blue-700">
-                Latest Blogs
-              </h1>
-              <div className="space-y-6">
-                {blogs.map((blog) => (
-                  <div
-                    key={blog._id}
-                    className="bg-white border rounded-lg p-6 shadow hover:shadow-lg transition flex gap-6 items-center h-[150px] cursor-pointer"
-                    onClick={() => handleViewBlog(blog._id)}
-                  >
-                    <div className="w-[80%] ">
-                      <h2 className="text-4xl font-semibold text-gray-800">
-                        {blog.title}
-                      </h2>
-                      <div className="flex justify-between items-center mt-4">
-                        <div className="text-sm text-gray-500">
-                          <span>By {blog.author.fullName}</span>
-                          <p>
-                            {new Date(blog.createdAt).toLocaleDateString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                              }
-                            )}
-                          </p>
+        <>
+          <div className={`${selectAd ? "blur-sm pointer-events-none" : ""}`}>
+            <Navbar />
+            <div className="flex">
+              <div className="w-[75%] mx-auto px-4 py-2">
+                <div className="bg-gray-100 h-[200px] w-full flex justify-center">
+                  <img
+                    src={topAd?.adImage}
+                    alt="ad1"
+                    className="object-contain cursor-pointer"
+                    onClick={() => handleClick(topAd)}
+                  />
+                </div>
+                <h2 className="text-3xl font-bold mb-4 text-black mt-4">
+                  Latest Blogs
+                </h2>
+                <div className="space-y-6">
+                  {blogs?.map((blog) => (
+                    <div
+                      key={blog._id}
+                      className="bg-white border rounded-lg p-6 shadow hover:shadow-lg transition flex gap-6 items-center h-[150px] cursor-pointer"
+                      onClick={() => handleViewBlog(blog._id)}
+                    >
+                      <div className="w-[80%] p-2">
+                        <h2 className="text-4xl font-semibold text-gray-800">
+                          {blog.title}
+                        </h2>
+                        <div className="flex justify-between items-center mt-4">
+                          <div className="text-sm text-gray-500">
+                            <span>By {blog.author.fullName}</span>
+                            <p>
+                              {new Date(blog.createdAt).toLocaleDateString(
+                                "en-GB",
+                                {
+                                  day: "2-digit",
+                                  month: "long",
+                                  year: "numeric",
+                                }
+                              )}
+                            </p>
+                          </div>
                         </div>
                       </div>
+                      <div className="w-[20%]">
+                        <img
+                          src={blog.blogImage}
+                          className="object-contain rounded-md"
+                        />
+                      </div>
                     </div>
-                    <div className="w-[20%]">
-                      <img
-                        src={blog.blogImage}
-                        className="object-contain rounded-md"
-                      />
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              <div className="w-[20%] flex items-start p-2 bg-gray-100">
+                <img
+                  src={sideAd?.adImage}
+                  alt="ad2"
+                  className="object-contain cursor-pointer"
+                  onClick={() => handleClick(sideAd)}
+                />
               </div>
             </div>
-            <div className=" w-[20%] flex items-center justify-center p-2">
-              <div className="bg-gray-400 h-full w-[200px]">ad 2</div>
-            </div>
           </div>
-        </div>
+          {selectAd && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
+              onClick={() => setSelectAd(null)}
+            >
+              <div
+                className="bg-white p-6 rounded-lg shadow-lg w-[900px] h-[80%] flex justify-center items-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <img
+                  src={selectAd?.adImage}
+                  alt="Ad"
+                  className="object-contain max-h-full max-w-full"
+                />
+              </div>
+            </div>
+          )}
+        </>
       ) : (
         <Auth setUser={setUser} />
       )}
