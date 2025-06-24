@@ -6,7 +6,7 @@ import { FiUsers } from "react-icons/fi";
 import { RiAdvertisementLine } from "react-icons/ri";
 
 const AdminDashboard = () => {
-  const [usersData, setUsersData] = useState(null);
+  const [users, setUsers] = useState(null);
   const [blogs, setBlogs] = useState([]);
   const [allAds, setAllAds] = useState([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
@@ -35,12 +35,25 @@ const AdminDashboard = () => {
           0
         );
         setTotalRevenue(totalClicks * 500);
-        console.log(totalClicks * 500);
+        // console.log(totalClicks * 500);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
     };
     fetchAds();
+
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:8000/api/user/allUsers");
+        const usersOnly = res.data.users?.filter(
+          (user) => user.role === "user"
+        );
+        setUsers(usersOnly || []);
+      } catch (err) {
+        localStorage.removeItem("blog-app-token");
+      }
+    };
+    fetchUsers();
   }, []);
 
   const stats = [
@@ -63,8 +76,8 @@ const AdminDashboard = () => {
       change: "+3%",
     },
     {
-      title: "Customers",
-      value: 2,
+      title: "Users",
+      value: users?.length || 0,
       icon: <FiUsers size={24} />,
       change: "+8%",
     },

@@ -48,7 +48,7 @@ const AdminPanel = () => {
               { icon: <FiHome />, label: "Dashboard", tab: "dashboard" },
               { icon: <RiAdvertisementLine />, label: "Ads", tab: "ads" },
               { icon: <SiHatenabookmark />, label: "Blogs", tab: "blogs" },
-              { icon: <FiUsers />, label: "Customers", tab: "customers" },
+              { icon: <FiUsers />, label: "Users", tab: "users" },
             ].map((item) => (
               <li key={item.tab}>
                 <button
@@ -91,7 +91,7 @@ const AdminPanel = () => {
           {activeTab === "dashboard" && <AdminDashboard />}
           {activeTab === "ads" && <AdminAds />}
           {activeTab === "blogs" && <AdminBlogs />}
-          {activeTab === "customers" && <AdminCustomers />}
+          {activeTab === "users" && <AdminCustomers />}
         </main>
       </div>
     </div>
