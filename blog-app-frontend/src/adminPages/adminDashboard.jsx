@@ -15,7 +15,7 @@ const AdminDashboard = () => {
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/blog/getAllBlogs"
+          "https://minddrop.onrender.com/api/blog/getAllBlogs"
         );
         // console.log(res.data.blogs);
         setBlogs(res.data);
@@ -27,7 +27,9 @@ const AdminDashboard = () => {
 
     const fetchAds = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/ad/getAllAds"
+        );
         // console.log(res.data.ads);
         setAllAds(res.data);
         const totalClicks = res.data.ads.reduce(
@@ -44,7 +46,9 @@ const AdminDashboard = () => {
 
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/user/allUsers");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/user/allUsers"
+        );
         const usersOnly = res.data.users?.filter(
           (user) => user.role === "user"
         );

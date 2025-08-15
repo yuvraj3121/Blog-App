@@ -35,7 +35,7 @@ const ViewBlog = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/blog/editBlog/${blogId}`,
+        `https://minddrop.onrender.com/api/blog/editBlog/${blogId}`,
         formData,
         {
           headers: {
@@ -56,7 +56,7 @@ const ViewBlog = () => {
   const handleDelete = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/api/blog/deleteBlog/${blogId}`,
+        `https://minddrop.onrender.com/api/blog/deleteBlog/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
@@ -76,7 +76,7 @@ const ViewBlog = () => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/blog/getBlogById/${blogId}`
+          `https://minddrop.onrender.com/api/blog/getBlogById/${blogId}`
         );
         setBlog(res.data.blog);
         setBlogImage(res.data.blog.blogImage);
@@ -89,7 +89,7 @@ const ViewBlog = () => {
     const fetchLikes = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/like/getAllLikes/${blogId}`
+          `https://minddrop.onrender.com/api/like/getAllLikes/${blogId}`
         );
         setLikes(res.data.count);
       } catch (error) {

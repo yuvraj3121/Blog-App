@@ -17,7 +17,9 @@ const AdminAds = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:8000/api/ad/deleteAd/${adId}`);
+      await axios.delete(
+        `https://minddrop.onrender.com/api/ad/deleteAd/${adId}`
+      );
       setAllAds((prev) => ({
         ...prev,
         ads: prev.ads.filter((ad) => ad._id !== adId),
@@ -33,7 +35,9 @@ const AdminAds = () => {
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/ad/getAllAds"
+        );
         console.log(res.data.ads);
         setAllAds(res.data);
       } catch (error) {

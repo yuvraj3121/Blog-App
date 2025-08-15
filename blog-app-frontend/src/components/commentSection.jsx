@@ -17,7 +17,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
         const token = localStorage.getItem("blog-app-token");
         if (token) {
           const res = await axios.get(
-            "http://localhost:8000/api/user/profile",
+            "https://minddrop.onrender.com/api/user/profile",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -34,7 +34,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
   const fetchComments = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/comment/getAllComments/${blogId}`
+        `https://minddrop.onrender.com/api/comment/getAllComments/${blogId}`
       );
       setComments(res.data.comments);
       setTotalComments(res.data.comments.length);
@@ -48,7 +48,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
     for (const comment of comments) {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/reply/getAllReplies/${comment._id}`
+          `https://minddrop.onrender.com/api/reply/getAllReplies/${comment._id}`
         );
         allReplies[comment._id] = res.data.replies;
       } catch (err) {
@@ -62,7 +62,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
     if (content.trim() === "") return;
     try {
       await axios.post(
-        `http://localhost:8000/api/comment/createComment/${blogId}`,
+        `https://minddrop.onrender.com/api/comment/createComment/${blogId}`,
         { content },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -80,7 +80,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
     if (!text || text.trim() === "") return;
     try {
       await axios.post(
-        `http://localhost:8000/api/reply/createReply/${commentId}`,
+        `https://minddrop.onrender.com/api/reply/createReply/${commentId}`,
         { replyText: text },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -96,7 +96,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
   const deleteComment = async (commentId) => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/comment/deleteComment/${commentId}`,
+        `https://minddrop.onrender.com/api/comment/deleteComment/${commentId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -110,7 +110,7 @@ const CommentSection = ({ setTotalComments, commentRef }) => {
   const deleteReply = async (replyId) => {
     try {
       await axios.delete(
-        `http://localhost:8000/api/reply/deleteReply/${replyId}`,
+        `https://minddrop.onrender.com/api/reply/deleteReply/${replyId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

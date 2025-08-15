@@ -7,7 +7,7 @@ const AdminBlogDetails = ({ selectedBlog, setComponentSelect }) => {
   const handleStatusChange = async (status) => {
     try {
       const res = await axios.patch(
-        `http://localhost:8000/api/blog/updateStatus/${selectedBlog._id}`,
+        `https://minddrop.onrender.com/api/blog/updateStatus/${selectedBlog._id}`,
         {
           status,
         }

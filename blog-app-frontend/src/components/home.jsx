@@ -23,7 +23,7 @@ const Home = () => {
     setSelectAd(ad);
     try {
       const res = await axios.patch(
-        `http://localhost:8000/api/ad/trackClick/${ad._id}`
+        `https://minddrop.onrender.com/api/ad/trackClick/${ad._id}`
       );
       console.log(res.data);
     } catch (error) {
@@ -37,7 +37,7 @@ const Home = () => {
         const token = localStorage.getItem("blog-app-token");
         if (token) {
           const res = await axios.get(
-            "http://localhost:8000/api/user/profile",
+            "https://minddrop.onrender.com/api/user/profile",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -53,7 +53,7 @@ const Home = () => {
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/blog/getAllBlogs"
+          "https://minddrop.onrender.com/api/blog/getAllBlogs"
         );
         const acceptedBlogs = res.data.blogs.filter(
           (blog) => blog.status === "accepted"
@@ -67,7 +67,9 @@ const Home = () => {
 
     const fetchAds = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/ad/getAllAds"
+        );
         console.log(res.data.ads);
         setAllAds(res.data);
         const top = res.data.ads.filter(

@@ -31,7 +31,7 @@ const WriteBlog = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/blog/createBlog",
+        "https://minddrop.onrender.com/api/blog/createBlog",
         formData,
         {
           headers: {

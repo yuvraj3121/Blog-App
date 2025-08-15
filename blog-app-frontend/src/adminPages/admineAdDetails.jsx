@@ -26,7 +26,7 @@ const AdminAdDetails = ({ selectedAd, setComponentSelect }) => {
     try {
       await axios
         .post(
-          `http://localhost:8000/api/ad/updateAd/${selectedAd._id}`,
+          `https://minddrop.onrender.com/api/ad/updateAd/${selectedAd._id}`,
           formData,
           {
             headers: {

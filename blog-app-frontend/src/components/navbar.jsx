@@ -17,7 +17,7 @@ const Navbar = () => {
         const token = localStorage.getItem("blog-app-token");
         if (token) {
           const res = await axios.get(
-            "http://localhost:8000/api/user/profile",
+            "https://minddrop.onrender.com/api/user/profile",
             {
               headers: { Authorization: `Bearer ${token}` },
             }

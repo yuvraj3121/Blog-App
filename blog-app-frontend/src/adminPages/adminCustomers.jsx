@@ -7,7 +7,9 @@ const AdminCustomers = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/user/allUsers");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/user/allUsers"
+        );
         const usersOnly = res.data.users?.filter(
           (user) => user.role === "user"
         );

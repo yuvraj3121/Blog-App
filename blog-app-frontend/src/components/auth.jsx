@@ -27,10 +27,13 @@ const Auth = ({ setUser }) => {
       }
 
       try {
-        const res = await axios.post("http://localhost:8000/api/user/login", {
-          email: formData.email,
-          password: formData.password,
-        });
+        const res = await axios.post(
+          "https://minddrop.onrender.com/api/user/login",
+          {
+            email: formData.email,
+            password: formData.password,
+          }
+        );
         console.log(res.data);
         localStorage.setItem("blog-app-token", res.data.token);
         if (res.data.user.role == "admin") navigate("/adminPanel");
@@ -51,13 +54,16 @@ const Auth = ({ setUser }) => {
         return;
       }
       try {
-        const res = await axios.post("http://localhost:8000/api/user/signUp", {
-          userName: formData.username,
-          fullName: formData.fullName,
-          email: formData.email,
-          phoneNumber: formData.phoneNumber,
-          password: formData.password,
-        });
+        const res = await axios.post(
+          "https://minddrop.onrender.com/api/user/signUp",
+          {
+            userName: formData.username,
+            fullName: formData.fullName,
+            email: formData.email,
+            phoneNumber: formData.phoneNumber,
+            password: formData.password,
+          }
+        );
         console.log(res.data);
         setComponent("login");
       } catch (error) {

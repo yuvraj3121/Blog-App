@@ -31,7 +31,7 @@ const AdminNewAd = ({ setComponentSelect }) => {
     try {
       setLoading(true);
       const res = await axios.post(
-        "http://localhost:8000/api/ad/createAd",
+        "https://minddrop.onrender.com/api/ad/createAd",
         formData,
         {
           headers: {

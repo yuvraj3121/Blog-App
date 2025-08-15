@@ -24,7 +24,7 @@ const Blog = () => {
   const handleLike = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/like/createLike/${blogId}`,
+        `https://minddrop.onrender.com/api/like/createLike/${blogId}`,
         {},
         {
           headers: {
@@ -42,7 +42,7 @@ const Blog = () => {
   const handleDislike = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/api/like/removeLike/${blogId}`,
+        `https://minddrop.onrender.com/api/like/removeLike/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
@@ -59,7 +59,7 @@ const Blog = () => {
   const handleSave = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/save/createSave/${blogId}`,
+        `https://minddrop.onrender.com/api/save/createSave/${blogId}`,
         {},
         {
           headers: {
@@ -77,7 +77,7 @@ const Blog = () => {
   const handleRemoveSaved = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:8000/api/save/removeSaved/${blogId}`,
+        `https://minddrop.onrender.com/api/save/removeSaved/${blogId}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
@@ -96,7 +96,7 @@ const Blog = () => {
     setSelectAd(ad);
     try {
       const res = await axios.patch(
-        `http://localhost:8000/api/ad/trackClick/${ad._id}`
+        `https://minddrop.onrender.com/api/ad/trackClick/${ad._id}`
       );
       console.log(res.data);
     } catch (error) {
@@ -110,7 +110,7 @@ const Blog = () => {
         const token = localStorage.getItem("blog-app-token");
         if (token) {
           const res = await axios.get(
-            "http://localhost:8000/api/user/profile",
+            "https://minddrop.onrender.com/api/user/profile",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -128,7 +128,7 @@ const Blog = () => {
     const fetchBlog = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/blog/getBlogById/${blogId}`
+          `https://minddrop.onrender.com/api/blog/getBlogById/${blogId}`
         );
         setBlog(res.data.blog);
       } catch (error) {
@@ -140,7 +140,7 @@ const Blog = () => {
     const fetchLikes = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/like/getAllLikes/${blogId}`
+          `https://minddrop.onrender.com/api/like/getAllLikes/${blogId}`
         );
         setLikes(res.data.count);
         const likedByUser = res.data.likes.some(
@@ -156,7 +156,7 @@ const Blog = () => {
     const checkSaved = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/save/isSaved/${blogId}`,
+          `https://minddrop.onrender.com/api/save/isSaved/${blogId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
@@ -174,7 +174,9 @@ const Blog = () => {
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/ad/getAllAds");
+        const res = await axios.get(
+          "https://minddrop.onrender.com/api/ad/getAllAds"
+        );
         const side = res.data.ads.filter(
           (ad) => ad.status == "active" && ad.position == "side"
         );

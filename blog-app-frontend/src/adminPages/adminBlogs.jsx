@@ -12,7 +12,7 @@ const AdminBlogs = () => {
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/blog/getAllBlogs"
+          "https://minddrop.onrender.com/api/blog/getAllBlogs"
         );
         setBlogs(res.data);
       } catch (error) {

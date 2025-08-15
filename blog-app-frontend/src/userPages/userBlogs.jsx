@@ -15,7 +15,7 @@ const UserBlogs = () => {
     const fetchBlogs = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/blog/getUserBlogs",
+          "https://minddrop.onrender.com/api/blog/getUserBlogs",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("blog-app-token")}`,
