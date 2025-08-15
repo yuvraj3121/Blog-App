@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import axios from "axios";
 
 const AdminNewAd = ({ setComponentSelect }) => {
+  const [loading, setLoading] = useState(false);
   const [position, setPosition] = useState("");
   const [adImage, setAdImage] = useState(null);
   const [adImageFile, setAdImageFile] = useState(null);
@@ -27,6 +29,7 @@ const AdminNewAd = ({ setComponentSelect }) => {
     formData.append("adImage", adImageFile);
 
     try {
+      setLoading(true);
       const res = await axios.post(
         "http://localhost:8000/api/ad/createAd",
         formData,
@@ -41,6 +44,9 @@ const AdminNewAd = ({ setComponentSelect }) => {
       setComponentSelect("main");
     } catch (error) {
       console.error("Upload failed:", error);
+      alert("Ad upload failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,9 +108,17 @@ const AdminNewAd = ({ setComponentSelect }) => {
         <div className="text-right">
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md font-semibold"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md font-semibold flex items-center justify-center gap-2"
+            disabled={loading}
           >
-            Add Ad
+            {loading ? (
+              <>
+                <FaSpinner className="animate-spin text-white" />
+                Uploading...
+              </>
+            ) : (
+              "Add Ad"
+            )}
           </button>
         </div>
       </form>

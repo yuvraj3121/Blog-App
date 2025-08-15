@@ -10,6 +10,26 @@ const AdminAds = () => {
   const [allAds, setAllAds] = useState([]);
   const [selectedAd, setSelectedAd] = useState(null);
 
+  const HandleDelete = async (adId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this ad?"
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`http://localhost:8000/api/ad/deleteAd/${adId}`);
+      setAllAds((prev) => ({
+        ...prev,
+        ads: prev.ads.filter((ad) => ad._id !== adId),
+        count: prev.count - 1,
+      }));
+      alert("Ad deleted successfully.");
+    } catch (error) {
+      console.error("Failed to delete ad:", error);
+      alert("Failed to delete ad. Please try again.");
+    }
+  };
+
   useEffect(() => {
     const fetchAds = async () => {
       try {
@@ -102,7 +122,7 @@ const AdminAds = () => {
                       <td className=" whitespace-nowrap text-2xl text-gray-500 flex justify-center items-center gap-1">
                         <button
                           className="text-red-400 hover:bg-red-200 p-2 w-[50px] flex justify-center items-center text-2xl"
-                          onClick={() => HandleDelete(product._id)}
+                          onClick={() => HandleDelete(ad._id)}
                         >
                           <MdOutlineDeleteForever />
                         </button>

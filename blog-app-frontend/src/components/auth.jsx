@@ -68,7 +68,7 @@ const Auth = ({ setUser }) => {
   };
 
   return (
-    <div className="flex flex-col h-[100vh] w-[206vh]">
+    <div className="flex flex-col h-[100vh] w-full">
       <h1 className="p-4 font-serif font-semibold">MindDrop</h1>
       <hr />
       <div className="bg-[url('/bg-3.jpg')] h-full w-full flex justify-center items-center">

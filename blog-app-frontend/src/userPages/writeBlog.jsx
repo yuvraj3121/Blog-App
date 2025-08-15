@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Navbar from "../components/navbar";
-import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { FaPlus, FaSpinner } from "react-icons/fa6";
 
 const WriteBlog = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [blogImage, setBlogImage] = useState(null);
   const [blog, setBlog] = useState({
@@ -28,6 +29,7 @@ const WriteBlog = () => {
     }
 
     try {
+      setLoading(true);
       const res = await axios.post(
         "http://localhost:8000/api/blog/createBlog",
         formData,
@@ -41,16 +43,13 @@ const WriteBlog = () => {
       );
 
       console.log("Blog published successfully:", res.data);
-      console.log("Blog published successfully:", {
-        title: blog.title,
-        content: blog.content,
-        category: blog.category,
-        blogImage: blogImage ? URL.createObjectURL(blogImage) : null,
-      });
       alert("Blog published successfully!");
       navigate("/");
     } catch (error) {
       console.error("Error publishing blog:", error);
+      alert("Error publishing blog.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,10 +71,15 @@ const WriteBlog = () => {
             <option value="tourism">Tourism</option>
           </select>
           <button
-            className="bg-green-400 hover:bg-green-500 hover:border-green-700 h-[30px] w-[70px] text-xl flex justify-center items-center "
+            className="bg-green-400 hover:bg-green-500 hover:border-green-700 h-[30px] w-[100px] text-xl flex justify-center items-center gap-2"
             onClick={handlePublish}
+            disabled={loading}
           >
-            Publish
+            {loading ? (
+              <FaSpinner className="animate-spin text-white text-lg" />
+            ) : (
+              "Publish"
+            )}
           </button>
         </div>
       </div>
